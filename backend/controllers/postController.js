@@ -14,7 +14,7 @@ const createPost = async (req, res) => {
       title,
       description,
       location,
-      contactInfo,
+      contactInfo: req.user.contactNumber,
       user: req.user._id,
     });
 

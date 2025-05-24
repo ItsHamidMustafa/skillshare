@@ -5,8 +5,8 @@ import Navbar from "./components/Navbar";
 // import { Aside } from "./components/Aside";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import { CreatePost } from './pages/CreatePost';
 // import { CoursesPage } from "./pages/CoursesPage";
-// import { Schedule } from "./pages/Schedule";
 import { Profile } from "./pages/Profile";
 import { Error } from "./pages/Error";
 // import { Teachers } from "./pages/Teachers";
@@ -36,6 +36,10 @@ function App() {
             <Route
               path="/login"
               element={!user ? <Login /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/create"
+              element={user ? <CreatePost /> : <Navigate to="/login" />}
             />
             {/* <Route
               path="/courses" element={user ? <CoursesPage /> : <Navigate to="/login" />}

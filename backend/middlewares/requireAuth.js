@@ -23,6 +23,7 @@ const requireAuth = async (req, res, next) => {
                     _id: user._id,
                     firstName: user.firstName,
                     role: user.role,
+                    contactNumber: user.contactNumber
                 }
                 break;
             case 'admin':

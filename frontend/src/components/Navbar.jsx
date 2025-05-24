@@ -34,17 +34,18 @@ export const Navbar = () => {
         //         )}
         //     </div>
         // </nav>
-        <nav class="navbar">
-            <div class="navbar-items">
-                <h2 class="logo">Skillshare <span class="dot">.</span> me</h2>
+        <nav className="navbar">
+            <div className="navbar-items">
+                <Link to="/"><h2 className="logo">Skillshare <span className="dot">.</span> me</h2></Link>
                 <ul>
                     <li><Link to="/"></Link></li>
                     <li><Link to="/profile">Profile</Link></li>
                 </ul>
-                <div class="navbar-buttons">
-                    <button class="navbar-button1">Login</button>
-                    <button class="navbar-button2">Signup</button>
-                </div>
+
+                {!user && <div className="navbar-buttons">
+                    <Link to="/login" className="navbar-button1">Login</Link>
+                    <Link to="/signup" className="navbar-button2">Signup</Link>
+                </div>}
             </div>
         </nav>
     )
