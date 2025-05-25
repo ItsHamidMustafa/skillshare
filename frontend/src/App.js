@@ -26,7 +26,7 @@ function App() {
         <div className="main-container">
           <Navbar />
           <Routes>
-            <Route path="/" element={user ? <Home /> : <Login />} />
+            <Route path="/" element={<Home />} />
             {/* <Route path="/contact" element={<Contact />} /> */}
             {/* <Route path="/about" element={<About />} /> */}
             <Route

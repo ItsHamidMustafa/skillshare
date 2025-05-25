@@ -19,7 +19,7 @@ const createPost = async (req, res) => {
     });
 
     const savedPost = await post.save();
-    res.status(201).json(savedPost);
+    res.status(201).json('Post created successfully!');
   } catch (err) {
     res.status(500).json({ message: 'Failed to create post', err });
   }
@@ -28,19 +28,19 @@ const createPost = async (req, res) => {
 
 const getAllPosts = async (req, res) => {
   try {
-    const { type, category, location, sort } = req.query;
+    // const { type, category, location, sort } = req.query;
 
-    let filter = {};
-    if (type) filter.type = type;
-    if (category) filter.category = category;
-    if (location) filter.location = location;
+    // let filter = {};
+    // if (type) filter.type = type;
+    // if (category) filter.category = category;
+    // if (location) filter.location = location;
 
-    let query = Post.find(filter).populate('user', 'name');
-
+    let query = Post.find().populate('user', 'name');
+    query.sort({createdAt: -1});
     // Sort: 'recent' or 'popular'
-    if (sort === 'recent') query = query.sort({ createdAt: -1 });
+    // if (sort === 'recent') query = query.sort({ createdAt: -1 });
     // Placeholder: for popular, you might later use likes or views
-    else if (sort === 'popular') query = query.sort({ createdAt: -1 });
+    // else if (sort === 'popular') query = query.sort({ createdAt: -1 });
 
     const posts = await query.exec();
     res.json(posts);
@@ -88,7 +88,7 @@ const deletePost = async (req, res) => {
 const getMyPosts = async (req, res) => {
   try {
     const posts = await Post.find({ user: req.user._id }).sort({ createdAt: -1 });
-    res.json(posts);
+    return res.json(posts);
   } catch (err) {
     res.status(500).json({ message: 'Failed to fetch user posts' });
   }

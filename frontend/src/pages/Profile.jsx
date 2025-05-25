@@ -12,31 +12,40 @@ export const Profile = () => {
   });
   const [passwordError, setPasswordError] = useState(null);
   const [passwordSuccess, setPasswordSuccess] = useState(null);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    setLoading(true);
     const token = JSON.parse(localStorage.getItem('token'));
-    const fetchUser = async () => {
+    const fetchData = async () => {
+      setLoading(true);
       try {
-        const res = await fetch('/api/auth/complete-me', {
+        // Fetch user
+        const userRes = await fetch('/api/auth/complete-me', {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
-        const data = await res.json();
-        setLoading(false);
+        const userData = await userRes.json();
+        if (!userRes.ok) throw new Error(userData.msg || 'Failed to fetch user');
+        setUser(userData.user);
+        setFormData(userData.user);
 
-        if (!res.ok) {
-          throw new Error(data.msg || 'Error fetching profile!');
-        }
-
-        setUser(data.user);
-        setFormData(data.user);
+        // Fetch posts
+        const postRes = await fetch('/api/posts/fetch', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const postData = await postRes.json();
+        if (!postRes.ok) throw new Error(postData.msg || 'Failed to fetch posts');
+        setPosts(postData || []);
       } catch (err) {
         setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchUser();
+    fetchData();
   }, []);
 
   const handlePasswordChange = (e) => {
@@ -89,7 +98,7 @@ export const Profile = () => {
       {user ? (
         <>
           <form>
-            <label htmlFor="firstName" className="col-white">
+            <label htmlFor="firstName">
               First Name
               <input
                 value={formData.firstName || ''}
@@ -98,7 +107,7 @@ export const Profile = () => {
                 readOnly
               />
             </label>
-            <label htmlFor="lastName" className="col-white">
+            <label htmlFor="lastName">
               Last Name
               <input
                 value={formData.lastName || ''}
@@ -107,7 +116,7 @@ export const Profile = () => {
                 readOnly
               />
             </label>
-            <label htmlFor="contactNumber" className="col-white">
+            <label htmlFor="contactNumber">
               Contact Number
               <input
                 value={formData.contactNumber || ''}
@@ -118,9 +127,9 @@ export const Profile = () => {
             </label>
           </form>
           <hr style={{ margin: '2rem 0' }} />
-          <h3 className="col-white">Change Password</h3>
+          <h3>Change Password</h3>
           <form onSubmit={handlePasswordSubmit}>
-            <label className="col-white">
+            <label>
               Current Password
               <input
                 type="password"
@@ -131,7 +140,7 @@ export const Profile = () => {
                 required
               />
             </label>
-            <label className="col-white">
+            <label>
               New Password
               <input
                 type="password"
@@ -148,6 +157,40 @@ export const Profile = () => {
             {passwordError && <p className="error">{passwordError}</p>}
             {passwordSuccess && <p className="success" onClick={() => setPasswordSuccess(null)}>{passwordSuccess}</p>}
           </form>
+          <hr style={{ margin: '2rem 0' }} />
+          <h3>Your Posts</h3>
+          <div className="post-list">
+            {posts.length > 0 ? (
+              posts.map((post) => (
+                // <div className="post-card" key={post._id}>
+                //   <h4>{post.title}</h4>
+                //   <p>Type: {post.type}</p>
+                //   <p>Category: {post.category}</p>
+                //   <p>Description: {post.description}</p>
+                //   <p>Location: {post.location}</p>
+                // </div>
+
+                <div className="box2" key={post._id}>
+                  <div className="icon-bar"><i className="fa-brands fa-google"></i>
+                    <div className="save-bar">{post.type}<i style={{ marginLeft: '3px' }} className="fa-solid fa-bookmark"></i></div>
+                  </div>
+                  <h1 className="heading">{post.title}</h1>
+                  <span>
+                    {post.description}
+                  </span>
+                  <div className='options'>
+                    <span className='option'>{post.location}</span>
+                    <span className='option'>{post.contactInfo}</span>
+                  </div>
+                  <div className="footer">
+                    <button className="apply">Apply now</button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>You have not posted anything yet.</p>
+            )}
+          </div>
         </>
       ) : (
         <p>No user found!</p>

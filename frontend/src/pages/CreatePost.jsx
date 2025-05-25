@@ -8,15 +8,18 @@ export const CreatePost = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [type, setType] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const token = JSON.parse(localStorage.getItem('token'));
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent form from refreshing the page
+    e.preventDefault();
     setIsLoading(true);
     setError('');
 
     try {
+      setError('');
+      setSuccess('');
       const response = await fetch("/api/posts/create", {
         method: 'POST',
         headers: {
@@ -37,10 +40,7 @@ export const CreatePost = () => {
         setError(errorData.message || 'Something went wrong');
         return;
       }
-
-      const result = await response.json();
-      console.log("Post created successfully:", result);
-      // Optionally reset form or redirect
+      setSuccess('Yay, your post was created successfully!');
       setTitle('');
       setDescription('');
       setCategory('');
@@ -55,8 +55,8 @@ export const CreatePost = () => {
 
 
   return (
-    <div className="login-container">
-      <form className="login" onSubmit={handleSubmit}>
+    <div className="profile-container">
+      <form onSubmit={handleSubmit}>
         <h2>Create Post</h2>
         <div className="input-box">
           <input
@@ -68,8 +68,8 @@ export const CreatePost = () => {
             required
           />
         </div>
-        {/* <div className="input-box"> */}
         <textarea
+          rows={10}
           className="input-box"
           id="post-description"
           type="textarea"
@@ -79,11 +79,7 @@ export const CreatePost = () => {
           placeholder="Describe it here"
         >
         </textarea>
-        {/* </div> */}
         <div className="input-box">
-          <span className="material-symbols-outlined material-symbols-filled col-primary">
-            wc
-          </span>
           <select
             id="category"
             value={category}
@@ -100,9 +96,6 @@ export const CreatePost = () => {
           </select>
         </div>
         <div className="input-box">
-          <span className="material-symbols-outlined material-symbols-filled col-primary">
-            wc
-          </span>
           <select
             id="type"
             value={type}
@@ -129,6 +122,7 @@ export const CreatePost = () => {
 
         <button disabled={isLoading} className={`primary-styled-button ${isLoading && 'loading-anim'}`}>Create Post &nbsp;&rarr;</button>
         {error && <div className="error">{error}</div>}
+        {success && <div className="success">{success}</div>}
       </form>
     </div>
   );

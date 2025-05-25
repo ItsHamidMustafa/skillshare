@@ -9,11 +9,11 @@
     /* border: 1px solid red; */
 }
 
-html {
+/* html {
     background: var(--primary);
-}
+} */
 
-input {
+input, textarea {
     outline: none;
 }
 
@@ -30,7 +30,6 @@ input {
     --error-light: #ffefef;
     --error-dark: #ff0000;
     --border-gray: #ffffff41;
-    /* --border-gray: #c7c7c7; */
 }
 
 .app {
@@ -139,6 +138,7 @@ nav {
 .teacher-card-container,
 .loading-container,
 .avatar-tray-container,
+.post-list,
 .d-flex-center {
     display: flex;
     align-items: center;
@@ -285,7 +285,7 @@ nav {
     margin: auto;
     border-radius: 30px;
     padding: 50px;
-    border: 1px solid var(--light);
+    border: 1px solid var(--primary);
 }
 
 .login h2,
@@ -297,7 +297,7 @@ nav {
 .nav-right-link,
 .col-white,
 .sub-component {
-    color: var(--light);
+    color: var(--primary);
     text-decoration: none;
 }
 
@@ -322,8 +322,6 @@ nav {
     background: var(--primary);
     cursor: pointer;
     color: var(--light);
-    background: var(--secondary);
-    color: var(--dark);
 }
 
 .primary-styled-button-l {
@@ -338,6 +336,16 @@ nav {
     font-size: 16px;
     cursor: pointer;
     gap: 5px;
+}
+
+.post-list {
+    margin: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.post-list >* {
+    flex-basis: 300px;
 }
 
 .input-box {
@@ -500,7 +508,11 @@ nav {
 
 .profile-container {
     width: 90%;
-    margin: auto;
+    margin: 50px auto;
+}
+
+.profile-container textarea {
+    padding: 25px;
 }
 
 .larger-text {

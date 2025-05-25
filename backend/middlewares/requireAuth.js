@@ -15,7 +15,6 @@ const requireAuth = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.SECRET);
         if (!decoded) return res.status(401).json({ message: "Invalid token" });
         let user;
-        console.log(decoded.role)
         switch (decoded.role) {
             case 'user':
                 user = await User.findById(decoded._id);
@@ -61,7 +60,6 @@ const completeMe = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.SECRET);
         if (!decoded) return res.status(401).json({ message: "Invalid token" });
         let user;
-        console.log(decoded.role);
         switch (decoded.role) {
             case 'user':
                 user = await User.findById(decoded._id);
