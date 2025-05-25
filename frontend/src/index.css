@@ -342,6 +342,7 @@ nav {
     margin: 20px;
     flex-wrap: wrap;
     gap: 10px;
+    align-items: start;
 }
 
 .post-list >* {
